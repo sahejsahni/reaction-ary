@@ -2,6 +2,9 @@
 node_modules
 /dist
 
+#graphics & other assets
+/graphics
+
 
 # local env files
 .env.local

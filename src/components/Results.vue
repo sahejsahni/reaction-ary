@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="results">
     <p>Reaction Time {{score}} ms</p>
     <p class="rank">{{rank}}</p>
   </div>
@@ -26,9 +26,15 @@ export default {
 </script>
 
 <style>
-  .rank {
-    font-size: 1.4em;
-    color: #0faf87;
-    font-weight: bold;
-  }
+.results {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+.rank {
+  margin-top: 160px;
+  font-size: 1.4em;
+  color: #0faf87;
+  font-weight: bold;
+}
 </style>

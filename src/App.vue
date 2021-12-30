@@ -11,14 +11,10 @@
         <h1 class="game-title">Reaction-ary</h1>
       </div>
 
-      <!-- instructions -->
-      <div class="instructions">
-        <h2>Instructions</h2>
-        <ol>
-          <li>Smash the reactionary as soon as you see him.</li>
-          <li>Difficulty increases as you advance, so gear up.</li>
-        </ol>
-      </div>
+      <Instructions :class="{ 'hide': exitHome }"></Instructions>
+
+      <Shadow v-if="isDissolving"></Shadow>
+      <Protester v-if="isPlaying" class="playing" :class="{ 'dissolving': isDissolving }" :delay="delay+200" @end="endGame" @click="dissolveProtester"/>
 
       <button class="start" @click="start" :disabled="isPlaying">Start</button>
     </div>
@@ -27,7 +23,6 @@
       <Protester v-if="atHome" class="home" :class="{ 'hide': exitHome }"/>
     </div>
 
-    <Protester v-if="isPlaying" class="playing" :delay="delay" @end="endGame" />
     <Results v-if="showResults" :score="score" />
   </div>
 </template>
@@ -35,9 +30,11 @@
 <script>
 import Protester from './components/Protester.vue'
 import Results from './components/Results.vue'
+import Instructions from './components/Instructions.vue'
+import Shadow from './components/Shadow.vue'
 export default {
   name: 'App',
-  components: { Protester, Results },
+  components: { Protester, Results, Instructions, Shadow },
   data() {
     return {
       atHome: true,
@@ -45,25 +42,27 @@ export default {
       exitHome: false,
       delay: null,
       score: null,
-      showResults: false
+      showResults: false,
+      isDissolving: false
     }
   },
   methods: {
     start()  {
       this.delay = 2000 + Math.random() * 5000
       this.exitHome = true
-      setTimeout(() => {
-        this.atHome = false
-        console.log(atHome);
-      }, 1000);
+      setTimeout(() => { this.atHome = false }, 1500);
       this.isPlaying = true
       this.showResults = false
+      this.isDissolving = false
     },
     endGame(reactionTime) {
       this.score = reactionTime
-      this.isPlaying = false
+      setTimeout(() => {this.isPlaying = false}, 500);
       this.showResults = true
     },
+    dissolveProtester() {
+      this.isDissolving = true
+    }
   }
 }
 </script>
@@ -112,6 +111,7 @@ body {
   display: flex;
   flex-direction: column;
   z-index: 1;
+  perspective: 400px;
 }
 .background-content {
   z-index: 0;
@@ -128,6 +128,8 @@ body {
   border-bottom: 2px solid #000000;
 }
 .highscore {
+  font-size: 27px;
+  line-height: 24px;
   font-weight: bold;
   color: #FF7A00;
   text-shadow: 1px 0 0 #000000, -1px 0 0 #000000, 0 1px 0 #000000, 0 -1px 0 #000000, 1.5px 1.5px 0 #000000;
@@ -135,6 +137,7 @@ body {
 
 button {
   font-family: 'Averia Libre', cursive;
+  opacity: 1;
 }
 button.start {
   background: #FF7A00;
@@ -150,9 +153,13 @@ button.start {
   margin: auto 0 120px 0;
   position: relative;
   z-index: 2;
+  transition: 0.2s cubic-bezier(0.36, 0, 0.66, -0.56);
+  transition-property: opacity, transform;
 }
 button[disabled] {
-  opacity: 0.2;
+  opacity: 0;
+  transform: scale(0.8)
+             translateY(56px);
   cursor: not-allowed;
 }
 .game-title {
@@ -162,17 +169,5 @@ button[disabled] {
   text-align: center;
   text-shadow: 1px 0 0 #000000, -1px 0 0 #000000, 0 1px 0 #000000, 0 -1px 0 #000000, 2px 2px 0 #000000;
   color: #FF7A00;
-}
-/* instructions styles */
-.instructions h2 {
-  text-decoration: underline;
-  font-size: 28px;
-  margin: 20px 0;
-}
-.instructions ol{
-  list-style-type: decimal;
-  text-align: left;
-  list-style-position: inside;
-  display: inline-block;
 }
 </style>

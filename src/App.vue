@@ -1,29 +1,27 @@
 <template>
   <div class="game">
     <div class="main-content">
-      <!-- high score -->
-      <div class="highscore-container">
-        <p>HIGH SCORE</p>
-        <p class="highscore">320</p>
-      </div>
-
+      <Highscores :totalScore="totalScore"></Highscores>
+      
       <div class="heading-container">
         <h1 class="game-title">Reaction-ary</h1>
       </div>
-
+      
+      <SpeedCounter :class="{ 'pause': isDissolving, 'animate': counterStatus }"></SpeedCounter>
+      
+      <Results v-if="showResults" :score="score" />
+      
       <Instructions :class="{ 'hide': exitHome }"></Instructions>
-
+      
       <Shadow v-if="isDissolving"></Shadow>
-      <Protester v-if="isPlaying" class="playing" :class="{ 'dissolving': isDissolving }" :delay="delay+200" @end="endGame" @click="dissolveProtester"/>
-
+      
+      <Protester v-if="isPlaying" class="playing" :class="{ 'dissolving': isDissolving }" :delay="delay+200" @stop="stopGame" @click="dissolveProtester" @timerOn="startCounter"/>
+      
       <button class="start" @click="start" :disabled="isPlaying">Start</button>
     </div>
-
     <div class="background-content">
       <Protester v-if="atHome" class="home" :class="{ 'hide': exitHome }"/>
     </div>
-
-    <Results v-if="showResults" :score="score" />
   </div>
 </template>
 
@@ -32,9 +30,11 @@ import Protester from './components/Protester.vue'
 import Results from './components/Results.vue'
 import Instructions from './components/Instructions.vue'
 import Shadow from './components/Shadow.vue'
+import Highscores from './components/Highscores.vue'
+import SpeedCounter from './components/SpeedCounter.vue'
 export default {
   name: 'App',
-  components: { Protester, Results, Instructions, Shadow },
+  components: { Protester, Results, Instructions, Shadow, Highscores, SpeedCounter },
   data() {
     return {
       atHome: true,
@@ -43,10 +43,23 @@ export default {
       delay: null,
       score: null,
       showResults: false,
-      isDissolving: false
+      isDissolving: false,
+      totalScore: 0,
+      highscore: 0,
+      counterStatus: false,
+      levelVar: 5
     }
   },
   methods: {
+    startCounter() {
+      this.counterStatus = true
+      console.log(this.levelVar);
+    },
+    calculateTotalScore() {
+      this.totalScore += this.score
+      this.levelVar *= 0.9
+      document.querySelector(':root').style.setProperty('--speed', this.levelVar)
+    },
     start()  {
       this.delay = 2000 + Math.random() * 5000
       this.exitHome = true
@@ -54,15 +67,22 @@ export default {
       this.isPlaying = true
       this.showResults = false
       this.isDissolving = false
+      this.counterStatus = false
     },
-    endGame(reactionTime) {
-      this.score = reactionTime
+    stopGame(reactionTime) {
+      console.log(reactionTime);
+      if (reactionTime*this.levelVar < 201) {this.score = 50}
+        else if (reactionTime*this.levelVar <401) {this.score = 40}
+        else if (reactionTime*this.levelVar <601) {this.score = 30}
+        else if (reactionTime*this.levelVar <801) {this.score = 20}
+        else {this.score = 10}
       setTimeout(() => {this.isPlaying = false}, 500);
       this.showResults = true
+      this.calculateTotalScore()
     },
     dissolveProtester() {
       this.isDissolving = true
-    }
+    },
   }
 }
 </script>
@@ -96,7 +116,7 @@ body {
 .game {
   height: 100%;
   width: 100%;
-  max-height: 840px;
+  max-height: 1000px;
   max-width: 500px;
   position: relative;
   overflow: hidden;
@@ -116,35 +136,15 @@ body {
 .background-content {
   z-index: 0;
 }
-
-/* highscore styles */
-.highscore-container {
-  display: flex;
-  justify-content: space-between;
-  padding: 20px 20px 12px 20px;
-  margin: 0 -20px;
-  font-size: 24px;
-  background-color: #DACDBF;
-  border-bottom: 2px solid #000000;
-}
-.highscore {
-  font-size: 27px;
-  line-height: 24px;
-  font-weight: bold;
-  color: #FF7A00;
-  text-shadow: 1px 0 0 #000000, -1px 0 0 #000000, 0 1px 0 #000000, 0 -1px 0 #000000, 1.5px 1.5px 0 #000000;
-}
-
 button {
   font-family: 'Averia Libre', cursive;
   opacity: 1;
 }
-button.start {
+button.start, .points {
   background: #FF7A00;
   color: #E4DFDA;
   padding: 12px 20px;
   border: 3px solid #000000;
-  box-sizing: border-box;
   box-shadow: 0px 4px 0px #000000;
   border-radius: 10px;
   font-size: 40px;

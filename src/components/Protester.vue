@@ -1,7 +1,9 @@
 <template>
   <div class="protester" v-if="showProtester" @click="stopTimer">
     <div class="slogan-wrapper">
-      <p class="slogan">Hindu Khatre<br>Mein Hai</p>
+      <p class="slogan">
+        {{slogan}}
+      </p>
     </div>
     <img src="../assets/protester.png" alt="protester holding placard">
   </div>
@@ -15,12 +17,16 @@ export default {
       showProtester:false,
       timer: null,
       reactionTime: 0,
+      slogan: null
+
     }
   },
   mounted() {
     setTimeout(() => {
+      this.sourceSlogan()
       this.showProtester = true
       this.startTimer()
+      this.$emit('timerOn')
     }, this.delay);
   },
   methods: {
@@ -31,8 +37,18 @@ export default {
     },
     stopTimer() {
       clearInterval(this.timer)
-      this.$emit('end', this.reactionTime)
+      this.$emit('stop', this.reactionTime)
     },
+    sourceSlogan() {
+      var collection = [
+        "Hindu Khatre Mein Hai",
+        "Not All Men",
+        "Freedom Over Safety",
+        "Vaccines Cause Autism",
+        "I Fear God Not Covid"
+        ]
+      this.slogan = collection[Math.floor(Math.random()*collection.length)];
+    }
   }
 }
 </script>

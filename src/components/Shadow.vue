@@ -12,14 +12,13 @@ export default {
 
 <style>
 .shadow-wrapper {
+  display: inline-block;
   height: 65vh;
   max-height: 640px;
   position: absolute;
-  width: 90vw;
-  max-width: 400px;
-  bottom: 0;
   left: 0;
   right: 0;
+  bottom: 0;
   margin: auto;
   z-index: -2;
 }

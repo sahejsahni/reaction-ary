@@ -13,10 +13,12 @@
       
       <Instructions :class="{ 'hide': exitHome }"></Instructions>
       
-      <Shadow v-if="isDissolving"></Shadow>
+      <div class="protester-wrapper">
+        <Protester v-if="isPlaying" class="playing" :class="[{ 'game-over': gameOver }]" :levelVar="levelVar" :delay="delay+200" @end="gameEnded" @stop="stopGame" @click="dissolveProtester" @timerOn="startCounter"/>
       
-      <Protester v-if="isPlaying" class="playing" :class="{ 'dissolving': isDissolving }" :delay="delay+200" @stop="stopGame" @click="dissolveProtester" @timerOn="startCounter"/>
-      
+        <Shadow v-if="isDissolving"></Shadow>
+      </div>
+
       <button class="start" @click="start" :disabled="isPlaying">Start</button>
     </div>
     <div class="background-content">
@@ -47,18 +49,17 @@ export default {
       totalScore: 0,
       highscore: 0,
       counterStatus: false,
-      levelVar: 5
+      levelVar: 5,
+      gameOver: false
     }
   },
   methods: {
     startCounter() {
       this.counterStatus = true
-      console.log(this.levelVar);
     },
     calculateTotalScore() {
       this.totalScore += this.score
       this.levelVar *= 0.9
-      document.querySelector(':root').style.setProperty('--speed', this.levelVar)
     },
     start()  {
       this.delay = 2000 + Math.random() * 5000
@@ -68,13 +69,15 @@ export default {
       this.showResults = false
       this.isDissolving = false
       this.counterStatus = false
+      document.querySelector(':root').style.setProperty('--speed', this.levelVar)
     },
     stopGame(reactionTime) {
-      console.log(reactionTime);
-      if (reactionTime*this.levelVar < 201) {this.score = 50}
-        else if (reactionTime*this.levelVar <401) {this.score = 40}
-        else if (reactionTime*this.levelVar <601) {this.score = 30}
-        else if (reactionTime*this.levelVar <801) {this.score = 20}
+      var e = 1 / this.levelVar
+      var y = e * reactionTime
+      if (y < 201) {this.score = 50}
+        else if (y <401) {this.score = 40}
+        else if (y <601) {this.score = 30}
+        else if (y <801) {this.score = 20}
         else {this.score = 10}
       setTimeout(() => {this.isPlaying = false}, 500);
       this.showResults = true
@@ -83,6 +86,11 @@ export default {
     dissolveProtester() {
       this.isDissolving = true
     },
+    gameEnded() {
+      this.gameOver = true
+      this.score = 0
+      console.log(this.gameOver);
+    }
   }
 }
 </script>
@@ -123,7 +131,7 @@ body {
   display: flex;
   flex-direction: column;
   padding: 0 20px;
-  background: lightgray;
+  background: #E4DFDA;
 }
 .main-content {
   height: 100%;
@@ -132,6 +140,14 @@ body {
   flex-direction: column;
   z-index: 1;
   perspective: 400px;
+}
+.protester-wrapper {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 65vh;
+  max-height: 640px;
 }
 .background-content {
   z-index: 0;

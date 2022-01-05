@@ -26,7 +26,7 @@ export default {
 
 <style>
 :root {
-  --speed: 1;
+  --speed: 5;
 }
 .speed-counter {
   display: flex;
@@ -37,59 +37,55 @@ export default {
 .blip-wrapper {
   height: 10px;
   width: 48px;
+  margin: 0 5px;
   border-radius: 50px;
   border: 2px solid #38332E;
   overflow: hidden;
   position: relative;
   background-color: #E4DFDA;
-  margin: 0;
 }
 .blip {
   position: relative;
-  margin: 0px;
+  margin: -2px;
   height: 10px;
+  width: 48px;
   background-color: red;
-  transform: translateX(-110%);
+  transform: translateX(-100%);
   animation: none;
 }
 .speed-counter.animate .blip {
   animation: fill-blip linear forwards;
-  animation-duration: calc(var(--speed)*5s);
+  animation-duration: calc(var(--speed)*200ms);
 }
 .speed-counter.pause .blip {
   animation-play-state: paused;
 }
-.blip.first {
+.speed-counter .blip.first {
   background-color: #12B76A;
-  left: -280px;
-  width: 280px;
+  animation-delay: calc(var(--speed)*0);
 }
-.blip.second {
+.speed-counter .blip.second {
   background-color: #FFD663;
-  left: -272px;
-  width: 224px;
+  animation-delay:  calc(var(--speed)*200ms);
 }
-.blip.third {
+.speed-counter .blip.third {
   background-color: #FDB022;
-  left: -264px;
-  width: 168px;
+  animation-delay:  calc(var(--speed)*400ms);
 }
-.blip.fourth {
+.speed-counter .blip.fourth {
   background-color: #F79009;
-  left: -256px;
-  width: 112px;
+  animation-delay:  calc(var(--speed)*600ms);
 }
-.blip.fifth {
+.speed-counter .blip.fifth {
   background-color: #F04438;
-  left: -248px;
-  width: 56px;
+  animation-delay:  calc(var(--speed)*800ms);
 }
 @keyframes fill-blip {
   0% {
-    transform: translateX(0);
+    transform: translateX(-100%);
   }
   100% {
-    transform: translateX(236px);
+    transform: translateX(0);
   }
 }
 </style>

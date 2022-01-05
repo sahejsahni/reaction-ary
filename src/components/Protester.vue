@@ -11,14 +11,13 @@
 
 <script>
 export default {
-  props: ['delay'],
+  props: ['delay', 'levelVar'],
   data() {
     return {
       showProtester:false,
       timer: null,
       reactionTime: 0,
       slogan: null
-
     }
   },
   mounted() {
@@ -26,6 +25,7 @@ export default {
       this.sourceSlogan()
       this.showProtester = true
       this.startTimer()
+      this.endGame()
       this.$emit('timerOn')
     }, this.delay);
   },
@@ -35,9 +35,20 @@ export default {
         this.reactionTime += 10
       }, 10)
     },
+    endGame() {
+      var t = this.levelVar * 1000
+      console.log(this.levelVar);
+      setTimeout(() => {
+        clearInterval(this.timer)
+        this.$emit('end')
+        console.log('game over');
+        this.slogan = "The reactionaries have won 😩"
+      }, t);
+    },
     stopTimer() {
       clearInterval(this.timer)
       this.$emit('stop', this.reactionTime)
+      console.log('still going on');
     },
     sourceSlogan() {
       var collection = [
@@ -60,6 +71,8 @@ export default {
   height: 640px;
   width: auto;
   mix-blend-mode: darken;
+  position: relative;
+  display: inline-block;
 }
 .protester.home {
   transform: rotate(36deg);
@@ -80,9 +93,10 @@ export default {
 .protester .slogan-wrapper {
   position: absolute;
   top: 1%;
-  left: 7%;
-  width: 85%;
+  left: 6%;
+  width: 86%;
   height: 41%;
+  z-index: 2;
   transform: rotate(-1.57deg);
   padding: 20px;
   display: flex;
@@ -100,18 +114,12 @@ export default {
 .protester.playing {
   height: 65vh;
   max-height: 640px;
-  position: absolute;
-  width: 90vw;
-  max-width: 400px;
   bottom: 0;
-  left: 0;
-  right: 0;
   margin: auto;
-  z-index: -1;
   transform-origin: 50% 100%;
 }
 .protester.playing {
-  animation: protester-appear 0.2s cubic-bezier(0.34, 1.2, 0.64, 1);
+  animation: protester-appear 200ms cubic-bezier(0.34, 1.2, 0.64, 1);
 }
 @keyframes protester-appear {
   0%   {
@@ -122,7 +130,10 @@ export default {
   }
 }
 .protester.playing.dissolving {
-  transition: opacity 0.5s;
+  transition: opacity 1s;
   opacity: 0;
+}
+.protester.game-over {
+  border: 1px solid black;
 }
 </style>

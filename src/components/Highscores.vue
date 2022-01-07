@@ -44,7 +44,7 @@ export default {
   border-bottom: 2px solid #FEC880;
 }
 .scores.new-highscore .highscore{
-  color: #E4DFDA;
+  color: #f4ebe3;
 }
 .score-container {
   display: flex;

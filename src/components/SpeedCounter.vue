@@ -42,7 +42,7 @@ export default {
   border: 2px solid #38332E;
   overflow: hidden;
   position: relative;
-  background-color: #E4DFDA;
+  background-color: #f4ebe3;
 }
 .blip {
   position: relative;

@@ -1,4 +1,5 @@
 <template>
+  <div class="grain"></div>
   <div class="game">
     <div class="main-content">
       <Highscores :totalScore="totalScore" :highScore="highScore" :class="{'new-highscore': newHighScore}"></Highscores>
@@ -161,7 +162,19 @@ body {
   height: 100vh;
   width: 100vw;
 }
-
+.grain {
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  background-image: url(./assets/grain.png);
+  background-size: 200px;
+  mix-blend-mode: multiply;
+}
+@media only screen and (max-width: 425px){
+	.grain {
+    background-size: 160px;
+  }
+}
 #app {
   font-family: 'Averia Libre', cursive;
   -webkit-font-smoothing: antialiased;
@@ -173,6 +186,7 @@ body {
   justify-content: center;
   height: 100%;
   width: 100%;
+  background-color: #cecece;
 }
 .game {
   height: 100%;
@@ -184,7 +198,8 @@ body {
   display: flex;
   flex-direction: column;
   padding: 0 20px;
-  background: #E4DFDA;
+  background: #f4ebe3;
+  mix-blend-mode: multiply;
 }
 .main-content {
   height: 100%;
@@ -218,7 +233,7 @@ button {
 }
 button.start, .points {
   background: #FF7A00;
-  color: #E4DFDA;
+  color: #f4ebe3;
   padding: 12px 20px;
   border: 3px solid #000000;
   box-shadow: 0px 4px 0px #000000;

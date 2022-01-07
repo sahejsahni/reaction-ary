@@ -61,7 +61,7 @@ export default {
       highScore: 0,
       newHighScore: false,
       counterStatus: false,
-      levelVar: 5,
+      levelVar: 3,
       gameOver: false
     }
   },
@@ -119,6 +119,7 @@ export default {
     resetGame() {
       this.showResults = false
       this.dissolveProtester()
+      this.levelVar = 3
       this.delay = 2000 + Math.random() * 5000
       this.isPlaying = false
       this.totalScore = 0

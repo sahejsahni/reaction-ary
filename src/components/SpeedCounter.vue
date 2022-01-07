@@ -26,7 +26,7 @@ export default {
 
 <style>
 :root {
-  --speed: 5;
+  --speed: 3;
 }
 .speed-counter {
   display: flex;

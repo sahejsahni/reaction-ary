@@ -51,7 +51,6 @@ export default {
   width: 48px;
   background-color: red;
   transform: translateX(-100%);
-  animation: none;
 }
 .speed-counter.animate .blip {
   animation: fill-blip linear forwards;

@@ -5,7 +5,7 @@
         {{slogan}}
       </p>
     </div>
-    <img src="../assets/protester.png" alt="protester holding placard">
+    <img src="../assets/protester(1).png" alt="protester holding placard">
   </div>
 </template>
 
@@ -14,10 +14,11 @@ export default {
   props: ['delay', 'levelVar'],
   data() {
     return {
-      showProtester:false,
+      showProtester: false,
       timer: null,
       reactionTime: 0,
-      slogan: null
+      slogan: null,
+      gameOver: false
     }
   },
   mounted() {
@@ -25,30 +26,29 @@ export default {
       this.sourceSlogan()
       this.showProtester = true
       this.startTimer()
-      this.endGame()
       this.$emit('timerOn')
     }, this.delay);
   },
   methods: {
     startTimer() {
+      var t = this.levelVar * 1000
       this.timer = setInterval(() => {
         this.reactionTime += 10
+        if (this.reactionTime > t) {
+          this.endGame()
+          }
       }, 10)
     },
     endGame() {
-      var t = this.levelVar * 1000
-      console.log(this.levelVar);
-      setTimeout(() => {
-        clearInterval(this.timer)
-        this.$emit('end')
-        console.log('game over');
-        this.slogan = "The reactionaries have won 😩"
-      }, t);
+      clearInterval(this.timer)
+      this.$emit('end')
+      this.slogan = "The reactionaries have won 😩"
     },
     stopTimer() {
-      clearInterval(this.timer)
-      this.$emit('stop', this.reactionTime)
-      console.log('still going on');
+      if (!this.gameOver) {
+        clearInterval(this.timer)
+        this.$emit('stop', this.reactionTime)
+      }
     },
     sourceSlogan() {
       var collection = [
@@ -70,9 +70,18 @@ export default {
 .protester {
   height: 640px;
   width: auto;
-  mix-blend-mode: darken;
   position: relative;
   display: inline-block;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.protester:focus {
+  outline: none !important;
 }
 .protester.home {
   transform: rotate(36deg);
@@ -117,9 +126,13 @@ export default {
   bottom: 0;
   margin: auto;
   transform-origin: 50% 100%;
+  cursor: pointer;
 }
 .protester.playing {
   animation: protester-appear 200ms cubic-bezier(0.34, 1.2, 0.64, 1);
+}
+.protester.shake {
+  animation: shake 2000ms linear;
 }
 @keyframes protester-appear {
   0%   {
@@ -129,11 +142,141 @@ export default {
     transform: rotate3d(0, 0, 0, 0deg);
   }
 }
-.protester.playing.dissolving {
-  transition: opacity 1s;
-  opacity: 0;
+@keyframes shake {
+  0% {
+    transform: rotate3d(0.53, 0, 0, 0deg)  
+  }
+  1% {
+    transform: rotate3d(0.53, 0, 0.02, 10deg);
+    filter: brightness(90%); 
+  }
+  2% {
+    transform: rotate3d(0.53, 0, -0.02, 10deg);
+    filter: brightness(90%); 
+  }
+  3% {
+    transform: rotate3d(0.53, 0, 0.02, 10deg);
+    filter: brightness(90%); 
+  }
+  4% {
+    transform: rotate3d(0.53, 0, -0.02, 10deg);
+    filter: brightness(90%); 
+  }
+  5% {
+    transform: rotate3d(0.53, 0, 0.02, 10deg);
+    filter: brightness(90%); 
+  }
+  6% {
+    transform: rotate3d(0.53, 0, -0.02, 10deg);
+    filter: brightness(90%); 
+  }
+  7% {
+    transform: rotate3d(0.53, 0, 0.02, 10deg);
+    filter: brightness(90%); 
+  }
+  8% {
+    transform: rotate3d(0.53, 0, -0.02, 10deg);
+    filter: brightness(90%); 
+  }
+  9% {
+    transform: rotate3d(0.53, 0, 0.02, 10deg);
+    filter: brightness(90%); 
+  }
+  10% {
+    transform: rotate3d(0.53, 0, -0.02, 10deg);
+    filter: brightness(90%); 
+  }
+  11% {
+    transform: rotate3d(0.53, 0, 0.02, 10deg);
+    filter: brightness(90%); 
+  }
+  12% {
+    transform: rotate3d(0.53, 0, -0.02, 10deg);
+    filter: brightness(90%); 
+  }
+  13% {
+    transform: rotate3d(0.53, 0, 0.02, 10deg);
+    filter: brightness(90%); 
+  }
+  14% {
+    transform: rotate3d(0.53, 0, -0.02, 10deg);
+    filter: brightness(90%); 
+  }
+  15% {
+    transform: rotate3d(0.53, 0, 0.02, 10deg);
+    filter: brightness(90%); 
+  }
+  16% {
+    transform: rotate3d(0.53, 0, -0.02, 10deg);
+    filter: brightness(90%); 
+  }
+  17% {
+    transform: rotate3d(0.53, 0, 0.02, 10deg);
+    filter: brightness(90%); 
+  }
+  18% {
+    transform: rotate3d(0.53, 0, -0.02, 10deg);
+    filter: brightness(90%); 
+  }
+  19% {
+    transform: rotate3d(0.53, 0, 0.02, 10deg);
+    filter: brightness(90%); 
+  }
+  20% {
+    transform: rotate3d(0.53, 0, -0.02, 10deg);
+    filter: brightness(90%); 
+  }
+  21% {
+    transform: rotate3d(0.53, 0, 0.02, 10deg);
+    filter: brightness(90%); 
+  }
+  22% {
+    transform: rotate3d(0.53, 0, -0.02, 10deg);
+    filter: brightness(90%); 
+  }
+  23% {
+    transform: rotate3d(0.53, 0, 0.02, 10deg);
+    filter: brightness(90%); 
+  }
+  24% {
+    transform: rotate3d(0.53, 0, -0.02, 10deg);
+    filter: brightness(90%); 
+  }
+  25% {
+    transform: rotate3d(0.53, 0, 0.02, 10deg);
+    filter: brightness(90%); 
+  }
+  26% {
+    transform: rotate3d(0.53, 0, -0.02, 10deg);
+    filter: brightness(90%); 
+  }
+  27% {
+    transform: rotate3d(0.53, 0, 0.02, 10deg);
+    filter: brightness(90%); 
+  }
+  28% {
+    transform: rotate3d(0.53, 0, -0.02, 10deg);
+    filter: brightness(90%); 
+  }
+  29% {
+    transform: rotate3d(0.53, 0, 0.02, 10deg);
+    filter: brightness(90%); 
+  }
+  30% {
+    transform: rotate3d(0.53, 0, -0.02, 10deg);
+    filter: brightness(90%); 
+  }
+  50% {
+    transform: rotate3d(0.53, 0, 0, 0deg)
+  }
+  100% {
+    transform: rotate3d(0.53, 0, 0, 0deg)  
+  }
 }
-.protester.game-over {
-  border: 1px solid black;
+.protester.playing.dissolving {
+  transition-duration: 0.5s;
+  transition-property: opacity, filter;
+  opacity: 0;
+  filter: blur(8px);
 }
 </style>

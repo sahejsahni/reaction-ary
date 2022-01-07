@@ -1,6 +1,6 @@
 <template>
   <div class="shadow-wrapper">
-    <img src="../assets/shadow.png" alt="" class="shadow">
+    <img src="../assets/shadow(1).png" alt="" class="shadow">
   </div>
 </template>
 
@@ -25,14 +25,18 @@ export default {
 .shadow {
   height: 100%;
   width: auto;
-  animation: shadow-appear 0.5s;
+  filter: blur(4px);
+  animation: shadow-appear 0.5s ease-out;
+  mix-blend-mode: darken;
 }
 @keyframes shadow-appear {
   0%   {
     opacity: 0;
+    filter: blur(20px);
     }
   100% {
     opacity: 1;
+    filter: blur(4px);
   }
 }
 </style>

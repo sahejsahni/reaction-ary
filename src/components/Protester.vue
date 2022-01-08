@@ -56,7 +56,8 @@ export default {
         "Not All Men",
         "Freedom Over Safety",
         "Vaccines Cause Autism",
-        "I Fear God Not Covid"
+        "I Fear God Not Covid",
+        "Ban Abortions"
         ]
       this.slogan = collection[Math.floor(Math.random()*collection.length)];
     }
